@@ -23,13 +23,14 @@ trait Routing extends Routable with Redirectize {
              cssFiles: Vector[String]
            ): spray.routing.Route =
     root[MainController]("root") ~
+      get0[MainController]("demo") ~
       scope("api") {
         scope("v1") {
           scope("sources") {
             get0[SourceController]("all" ~> "all") ~
             get0[SourceController](LongNumber ~> "show") ~
             post0[SourceController]("create") ~
-            delete0[SourceController](LongNumber ~> "delete") ~
+            //delete0[SourceController](LongNumber ~> "delete") ~
             put0[SourceController](LongNumber ~> "update") ~
             put0[SourceController]("markall" ~> "markAll") ~
             put0[SourceController](("mark" / LongNumber) ~> "mark") ~
@@ -50,11 +51,12 @@ trait Routing extends Routable with Redirectize {
             get0[PluginController]("all") ~
             get0[PluginController]("js") ~
             get0[PluginController]("css")
-          } ~ scope("system") {
-            get0[SystemController]("stop") ~
-            get0[SystemController]("restart") ~
-            get0[SystemController]("exit")
           }
+//          ~ scope("system") {
+//            get0[SystemController]("stop") ~
+//            get0[SystemController]("restart") ~
+//            get0[SystemController]("exit")
+//          }
         }
       } ~ get0[MainController]("about") ~
       pathPrefix("css") {

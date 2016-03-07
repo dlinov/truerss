@@ -53,7 +53,7 @@ SourcesController =
     ajax.refresh_one id
 
   remove: (e, id) ->
-    ajax.remove_source id
+    console.log("unsupported")
 
   edit: (e, id) ->
     source = Sources.find('id', id)

@@ -9,14 +9,11 @@ SystemController =
       pos     : 'top-center'
 
   restart: () ->
-    ajax.restart_system (msg) =>
-      self._notify("Start restarting system")
+    console.log("unsupported")
 
   stop: () ->
-    ajax.stop_system (msg) =>
-      @_notify("Stop system")
+    console.log("unsupported")
 
   exit: () ->
-    ajax.exit_app (msg) =>
-      @_notify("Stop app and exit")
+    console.log("unsupported")
 

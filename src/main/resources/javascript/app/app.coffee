@@ -80,5 +80,10 @@ $ ->
     adapter: new JQueryAdapter()
     mix_logger_into_controller: true
     controller_wrapper: ControllerExt
-    log: false
-    log_filters: ['Redirect']
+    log: true
+    logger: (level, msg) ->
+      lvls = Sirius.Logger.Levels
+      if level == 'WARN' || level == 'ERROR' || msg.indexOf("[APPLICATION]") != -1
+        console.log("handle: #{level} -> #{msg}")
+
+    log_filters: [0, 1, 2, 3, 4, 5, 6, 7]
