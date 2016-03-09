@@ -104,7 +104,7 @@ object Boot extends App {
       val dbUsername = dbConf.getString("username")
       val dbPassword = dbConf.getString("password")
 
-      val backend: Option[SupportedDb] = DBProfile.get(dbBackend)//Some(H2)
+      val backend: Option[SupportedDb] = Some(H2)//DBProfile.get(dbBackend)//Some(H2)
 
       if (backend.isEmpty) {
         Console.err.println(s"Unsupported database backend: $dbBackend")
@@ -168,7 +168,6 @@ object Boot extends App {
 
       system.actorOf(Props(classOf[SystemActor], actualConfig, db, driver,
         backend.get), "system-actor")
-
     case None =>
       Console.err.println("Unknown argument")
       sys.exit(1)

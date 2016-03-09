@@ -25,6 +25,7 @@ object Libs {
     val baseVersion = "0.0.5"
     val jsoupVersion = "1.8.3"
     val scalaTestVersion = "3.0.0-M7"
+    val rollBarVersion = "0.0.1"
   }
 
   import versions._
@@ -81,7 +82,8 @@ object Libs {
       .exclude("commons-collections", "commons-collections"),
     "com.typesafe" % "config" % configVersion,
     "com.github.scopt" %% "scopt" % scoptVersion,
-    "org.java-websocket" % "Java-WebSocket" % jwsVersion
+    "org.java-websocket" % "Java-WebSocket" % jwsVersion,
+    "com.github.truerss" %% "rollbar-scala" % rollBarVersion
   )
 
   val tests = Seq(
