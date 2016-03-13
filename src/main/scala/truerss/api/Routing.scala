@@ -22,8 +22,10 @@ trait Routing extends Routable with Redirectize {
              jsFiles: Vector[String],
              cssFiles: Vector[String]
            ): spray.routing.Route =
-    root[MainController]("root") ~
-      get0[MainController]("demo") ~
+    host("truerss.net") {
+      root[MainController]("root")
+    } ~ host("demo.truerss.net") {
+      root[MainController]("demo") ~
       scope("api") {
         scope("v1") {
           scope("sources") {
@@ -37,8 +39,8 @@ trait Routing extends Routable with Redirectize {
             get0[SourceController](("unread" / LongNumber) ~> "unread") ~
             get0[SourceController](("latest"  / LongNumber) ~> "latest") ~
             get0[SourceController](("feeds" / LongNumber) ~> "feeds") ~
-            put0[SourceController](("refresh" / LongNumber) ~> "refreshOne") ~
-            put0[SourceController]("refresh") ~
+           //put0[SourceController](("refresh" / LongNumber) ~> "refreshOne") ~
+           //put0[SourceController]("refresh") ~
             post0[SourceController]("import" ~> "fromFile")
           } ~ scope("feeds") {
             get0[FeedController]("favorites") ~
@@ -58,7 +60,7 @@ trait Routing extends Routable with Redirectize {
 //            get0[SystemController]("exit")
 //          }
         }
-      } ~ get0[MainController]("about") ~
+      } } ~ get0[MainController]("about") ~
       pathPrefix("css") {
         getFromResourceDirectory("css")
       } ~

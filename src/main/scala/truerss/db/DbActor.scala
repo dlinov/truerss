@@ -1,6 +1,6 @@
 package truerss.db
 
-import java.util.Date
+import java.util.{Random, Date}
 
 import akka.actor.{Actor, ActorLogging}
 import akka.pattern._
@@ -22,6 +22,8 @@ class DbActor(db: DatabaseDef, driver: CurrentDriver) extends Actor with ActorLo
   import system.util.{FeedContentUpdate, SourceLastUpdate}
   import system.ws.NewFeeds
   import truerss.util.Util._
+
+  val r = new Random()
 
   val stream = context.system.eventStream
 
@@ -67,7 +69,7 @@ class DbActor(db: DatabaseDef, driver: CurrentDriver) extends Actor with ActorLo
 
     case AddSource(source) =>
       complete { implicit session =>
-        (sources returning sources.map(_.id)) += source
+        (sources returning sources.map(_.id)) += source.copy(interval = 1 + r.nextInt(6))
       }
 
     case UpdateSource(num, source) =>
