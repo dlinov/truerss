@@ -41,7 +41,8 @@ class SystemActor(config: TrueRSSConfig,
         Resume
   }
 
-  val dbRef = context.actorOf(Props(classOf[DbActor], dbDef, driver), "db")
+  val dbRef = context.actorOf(
+    Props(classOf[DbActor], dbDef, driver).withRouter(SmallestMailboxPool(6)), "db")
 
   val sourcesRef = context.actorOf(Props(classOf[SourcesActor],
     config,
