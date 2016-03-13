@@ -53,6 +53,8 @@ trait Routing extends Routable with Redirectize {
             get0[PluginController]("all") ~
             get0[PluginController]("js") ~
             get0[PluginController]("css")
+          } ~ scope("write") {
+            post0[AjaxController]("write")
           }
 //          ~ scope("system") {
 //            get0[SystemController]("stop") ~

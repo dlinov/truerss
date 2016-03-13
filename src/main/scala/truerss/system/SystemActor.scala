@@ -12,6 +12,7 @@ import truerss.api.{RoutingService, WSApi}
 import truerss.config.TrueRSSConfig
 import truerss.db.{SupportedDb, DbActor}
 import truerss.models.CurrentDriver
+import truerss.system.RollbarWriter.{RError, RWarning, RInfo}
 import truerss.system.util.{NotifyLevels, Notify}
 
 import scala.slick.jdbc.JdbcBackend.DatabaseDef
@@ -43,6 +44,11 @@ class SystemActor(config: TrueRSSConfig,
 
   val dbRef = context.actorOf(
     Props(classOf[DbActor], dbDef, driver).withRouter(SmallestMailboxPool(6)), "db")
+  val rollbarWriter = context.actorOf(Props[RollbarWriter])
+
+  system.eventStream.subscribe(rollbarWriter, classOf[RInfo])
+  system.eventStream.subscribe(rollbarWriter, classOf[RWarning])
+  system.eventStream.subscribe(rollbarWriter, classOf[RError])
 
   val sourcesRef = context.actorOf(Props(classOf[SourcesActor],
     config,

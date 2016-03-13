@@ -89,6 +89,8 @@ package object system {
     }
 
     case class Notify(level: NotifyLevels.Level, message: String)
+
+    case class Write(msg: String)
   }
 
   object ws {

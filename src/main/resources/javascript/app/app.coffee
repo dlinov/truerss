@@ -83,7 +83,15 @@ $ ->
     log: true
     logger: (level, msg) ->
       lvls = Sirius.Logger.Levels
-      if level == 'WARN' || level == 'ERROR' || msg.indexOf("[APPLICATION]") != -1
+      if level == 'WARN' || level == 'ERROR' || (msg.indexOf("[APPLICATION]") != -1 && msg.indexOf("Current browser") != -1)
         console.log("handle: #{level} -> #{msg}")
+        $.ajax
+          url: "/api/v1/write/write"
+          type: "POST"
+          dataType: "json"
+          data: "#{level} -> #{msg}"
+          success: () ->
+          error: () ->
+
 
     log_filters: [0, 1, 2, 3, 4, 5, 6, 7]

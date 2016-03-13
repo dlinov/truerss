@@ -26,6 +26,7 @@ class ProxyServiceActor(appPlugins: ApplicationPlugins,
   import truerss.models.{Feed, Source}
   import util._
   import ws._
+  import RollbarWriter._
 
   implicit val timeout = Timeout(7 seconds)
 
@@ -35,12 +36,12 @@ class ProxyServiceActor(appPlugins: ApplicationPlugins,
     classOf[PublishPluginActor], appPlugins.publishPlugin),
     "publish-plugin-actor")
 
+
   stream.subscribe(publishActor, classOf[PublishEvent])
   stream.subscribe(dbRef, classOf[SourceLastUpdate])
   stream.subscribe(dbRef, classOf[FeedContentUpdate])
   stream.subscribe(dbRef, classOf[AddFeeds])
   stream.subscribe(dbRef, classOf[SetState])
-
 
   def addOrUpdate[T <: Jsonize](msg: Sourcing,
                                 f: Long => ModelResponse[T]) = {
@@ -204,6 +205,9 @@ class ProxyServiceActor(appPlugins: ApplicationPlugins,
     case msg @ ( _ : Update.type | _ : UpdateOne) =>
       sourcesRef forward msg
       sender ! ok
+
+    case Write(msg) =>
+      stream.publish(RInfo(msg))
   }
 
   def pluginReceive: Receive = {

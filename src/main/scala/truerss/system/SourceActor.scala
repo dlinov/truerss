@@ -24,6 +24,7 @@ class SourceActor(source: Source, feedReader: BaseFeedReader,
   import db.AddFeeds
   import truerss.util.Request._
   import truerss.util.Util.EntryExt
+  import RollbarWriter._
   import context.dispatcher
 
   val stream = context.system.eventStream
@@ -59,6 +60,7 @@ class SourceActor(source: Source, feedReader: BaseFeedReader,
         case Left(error) =>
           log.warning(s"Error when update source $error")
           stream.publish(Notify(NotifyLevels.Danger, error.error))
+          stream.publish(RError(s"Error when update source ${source.url} -> $error"))
       }
       context.parent ! Updated
 
